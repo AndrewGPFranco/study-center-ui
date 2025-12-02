@@ -35,3 +35,5 @@ coverage
 # Vitest
 __screenshots__/
 .env
+auto-imports.d.ts
+components.d.ts

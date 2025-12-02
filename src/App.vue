@@ -1,3 +1,5 @@
 <template>
-  <router-view></router-view>
+  <UApp>
+    <RouterView/>
+  </UApp>
 </template>
