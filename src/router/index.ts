@@ -1,4 +1,5 @@
 import HomeView from "@/pages/HomeView.vue";
+import GraphView from "@/pages/GraphView.vue";
 import {createRouter, createWebHistory} from 'vue-router'
 
 const router = createRouter({
@@ -8,6 +9,11 @@ const router = createRouter({
             path: "/",
             name: "home-view",
             component: HomeView
+        },
+        {
+            path: "/graphs",
+            name: "graph-view",
+            component: GraphView
         }
     ],
 })

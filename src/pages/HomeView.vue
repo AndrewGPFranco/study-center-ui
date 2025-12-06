@@ -1,7 +1,5 @@
 <template>
-  <GraphView />
-</template>
+  <h1>O seu Roadmap de estudos</h1>
 
-<script setup lang="ts">
-import GraphView from '@/components/graphs/GraphView.vue';
-</script>
+  <router-link :to="{ name: 'graph-view' }" class="link">Buscar roadmaps</router-link>
+</template>
