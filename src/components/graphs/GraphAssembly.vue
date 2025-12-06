@@ -7,8 +7,8 @@
           <UIcon name="i-heroicons-share" class="w-6 h-6 text-primary-500"/>
         </div>
         <div>
-          <h1 class="text-lg font-bold leading-tight">Visualização de Roadmaps</h1>
-          <p class="text-xs text-gray-500 dark:text-gray-400">Explore roadmap de diversas tecnologias</p>
+          <h1 class="text-lg font-bold leading-tight">Visualização de Roteiros</h1>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Explore roteiro de diversas tecnologias</p>
         </div>
       </div>
 
@@ -48,8 +48,8 @@
         <div class="p-4 bg-gray-100 dark:bg-gray-900 rounded-full mb-4">
           <UIcon name="i-heroicons-cube-transparent" class="w-16 h-16 text-gray-300 dark:text-gray-700"/>
         </div>
-        <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300">No Graph Loaded</h3>
-        <p class="text-sm">Enter a technology name above to generate its roadmap.</p>
+        <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300">Nenhum grafo carregado.</h3>
+        <p class="text-sm">Insira o nome de uma tecnologia acima para gerar seu roteiro.</p>
       </div>
 
       <div v-if="graph"
