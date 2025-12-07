@@ -92,6 +92,7 @@ const technology = ref<string>("")
 const axiosInstance = createAxiosInstance()
 const colorGraph = ref<string>("green");
 const {zoomIn, zoomOut, fitView} = useVueFlow()
+const lastRoadmapSearched = ref<string>("");
 
 const getEdges = computed(() => {
   return graph.value?.edges.map((edge) => {
@@ -122,7 +123,13 @@ const getNodes = computed(() => {
   }) ?? []
 })
 
+function checksIfIsNewTechnology(): boolean {
+  return lastRoadmapSearched.value.toLowerCase() !== technology.value.toLocaleLowerCase();
+}
+
 async function fetchGraphData() {
+  if (!checksIfIsNewTechnology()) return;
+
   if (!technology.value.trim() || technology.value.length < 2) {
     toast.add({
       title: 'Feedback',
@@ -152,6 +159,8 @@ async function fetchGraphData() {
     }
 
     graph.value = response.data
+
+    lastRoadmapSearched.value = response.data.nodes[0].content
 
     colorGraph.value = response.data.nodes[0].color
 
