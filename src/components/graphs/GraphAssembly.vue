@@ -29,7 +29,7 @@
     </div>
 
     <div class="flex-1 relative bg-gray-50 dark:bg-gray-950 overflow-hidden">
-      <VueFlow v-if="graph" class="h-full w-full" :nodes="getNodes" :edges="getEdges" :default-viewport="{ zoom: 1 }"
+      <VueFlow v-if="graph" class="h-full w-full" :nodes="getNodes" :edges="getEdges" :default-viewport="{ zoom: 0.8 }"
                :min-zoom="0.1" :max-zoom="4" fit-view-on-init>
         <template #node-special="specialNodeProps">
           <SpecialNode v-bind="specialNodeProps"/>
@@ -81,6 +81,7 @@ import SpecialEdge from "@/components/graphs/SpecialEdge.vue"
 import {VueFlow, useVueFlow, MarkerType} from '@vue-flow/core'
 import {createAxiosInstance} from "@/network/axios-instance.ts"
 
+const toast = useToast();
 const graph = ref<IGraph>()
 const loading = ref(false)
 const technology = ref<string>("")
@@ -93,9 +94,13 @@ const getEdges = computed(() => {
       id: edge.id,
       source: edge.source,
       target: edge.target,
-      type: 'smoothstep',
+      type: 'default',
       markerEnd: MarkerType.ArrowClosed,
-      animated: true,
+      animated: false,
+      style: {
+        stroke: '#94a3b8',
+        strokeWidth: 1.5
+      },
       data: {hello: edge.content}
     }
   }) ?? []
@@ -123,6 +128,15 @@ async function fetchGraphData(tech: string) {
         password: 'admin'
       }
     })
+
+    if (response.data.nodes.length === 0) {
+      toast.add({
+        title: "Feedback",
+        description: "Tecnologia pesquisada não possui um roteiro, busque por outra stack.",
+        icon: 'i-lucide-info'
+      })
+      return;
+    }
 
     graph.value = response.data
 
