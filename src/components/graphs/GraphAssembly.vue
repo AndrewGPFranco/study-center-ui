@@ -3,9 +3,10 @@
     <div
         class="flex items-center justify-between p-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-10">
       <div class="flex items-center gap-3">
-        <router-link :to="{name: 'home-view'}">
+        <router-link :to="{ name: 'home-view' }">
           <UTooltip text="Voltar" :popper="{ placement: 'right' }">
-            <UIcon name="i-lucide-arrow-left" class="w-6 h-6 text-gray-500"/>
+            <UIcon name="i-lucide-arrow-left"
+                   class="w-6 h-6 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"/>
           </UTooltip>
         </router-link>
         <div class="p-2 bg-primary-500/10 rounded-lg">
