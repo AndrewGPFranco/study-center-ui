@@ -129,7 +129,14 @@ function checksIfIsNewTechnology(): boolean {
 }
 
 async function fetchGraphData() {
-  if (!checksIfIsNewTechnology()) return;
+  if (!checksIfIsNewTechnology()) {
+    toast.add({
+      title: "Feedback",
+      description: "A stack pesquisada já é a renderizada na tela!",
+      icon: 'i-lucide-info'
+    })
+    return;
+  }
 
   if (!technology.value.trim() || technology.value.length < 2) {
     toast.add({
