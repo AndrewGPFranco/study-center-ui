@@ -134,7 +134,7 @@ async function fetchGraphData() {
 
   loading.value = true
   try {
-    const response = await axiosInstance.get(`graph?technology=${technology.value}`, {
+    const response = await axiosInstance.get(`graph?technology=${technology.value}&idUser=admin`, {
       // TODO: remover autenticação dessa maneira, pós implementação de autenticação JWT no back
       auth: {
         username: 'admin',
