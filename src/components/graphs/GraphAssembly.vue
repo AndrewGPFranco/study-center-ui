@@ -14,16 +14,16 @@
 
       <div class="flex items-center gap-2 w-full max-w-md">
         <UInput v-model="technology" icon="i-heroicons-magnifying-glass" placeholder="Ex: java, python..."
-                class="flex-1" @keyup.enter="fetchGraphData(technology)">
+                class="flex-1" @keyup.enter="fetchGraphData">
           <template #trailing>
-            <UButton v-show="technology !== ''" color="gray" variant="link" icon="i-heroicons-x-mark" :padded="false"
-                     @click="technology = ''"/>
+            <UButton v-show="technology !== ''" color="gray" variant="link" class="cursor-pointer"
+                     icon="i-heroicons-x-mark" :padded="false" @click="technology = ''"/>
           </template>
         </UInput>
 
-        <UButton icon="i-heroicons-arrow-path" class="cursor-pointer" :loading="loading"
-                 @click="fetchGraphData(technology)">
-          Generate
+        <UButton icon="i-heroicons-arrow-path" class="cursor-pointer" :disabled="technology.length < 2"
+                 :loading="loading" @click="fetchGraphData">
+          Buscar
         </UButton>
       </div>
     </div>
@@ -60,8 +60,7 @@
         </UTooltip>
         <UTooltip text="Zoom Out" :popper="{ placement: 'left' }">
           <UButton class="cursor-pointer" icon="i-heroicons-minus" color="gray" variant="ghost" size="sm"
-                   @click="() => { zoomOut() }"
-                   square/>
+                   @click="() => { zoomOut() }" square/>
         </UTooltip>
         <div class="h-px w-full bg-gray-200 dark:bg-gray-700 my-0.5"></div>
         <UTooltip text="Fit View" :popper="{ placement: 'left' }">
@@ -118,12 +117,19 @@ const getNodes = computed(() => {
   }) ?? []
 })
 
-async function fetchGraphData(tech: string) {
-  if (!tech.trim()) return
+async function fetchGraphData() {
+  if (!technology.value.trim() || technology.value.length < 2) {
+    toast.add({
+      title: 'Feedback',
+      description: "A palavra pesquisada precisa conter ao menos 2 letras.",
+      icon: 'i-lucide-triangle-alert'
+    })
+    return
+  }
 
   loading.value = true
   try {
-    const response = await axiosInstance.get(`graph?technology=${tech}`, {
+    const response = await axiosInstance.get(`graph?technology=${technology.value}`, {
       // TODO: remover autenticação dessa maneira, pós implementação de autenticação JWT no back
       auth: {
         username: 'admin',
