@@ -32,7 +32,7 @@
       <VueFlow v-if="graph" class="h-full w-full" :nodes="getNodes" :edges="getEdges" :default-viewport="{ zoom: 0.8 }"
                :min-zoom="0.1" :max-zoom="4" fit-view-on-init>
         <template #node-special="specialNodeProps">
-          <SpecialNode v-bind="specialNodeProps"/>
+          <SpecialNode v-bind="specialNodeProps" :color="colorGraph"/>
         </template>
 
         <template #edge-special="specialEdgeProps">
@@ -86,6 +86,7 @@ const graph = ref<IGraph>()
 const loading = ref(false)
 const technology = ref<string>("")
 const axiosInstance = createAxiosInstance()
+const colorGraph = ref<string>("green");
 const {zoomIn, zoomOut, fitView} = useVueFlow()
 
 const getEdges = computed(() => {
@@ -139,6 +140,8 @@ async function fetchGraphData(tech: string) {
     }
 
     graph.value = response.data
+
+    colorGraph.value = response.data.nodes[0].color
 
     setTimeout(() => {
       fitView({padding: 0.2})

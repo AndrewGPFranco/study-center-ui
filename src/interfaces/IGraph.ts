@@ -5,10 +5,11 @@ export interface IGraph {
 
 interface Node {
     id: string
+    type: string
+    color: string
+    content: string
     positionX: number
     positionY: number
-    content: string,
-    type: string
 }
 
 interface Edge {
