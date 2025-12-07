@@ -7,7 +7,7 @@
           class="inner-circle w-[100px] h-[100px] rounded-full bg-white dark:bg-gray-800 flex items-center justify-center">
 
         <div class="node-icon flex items-center justify-center">
-          <UIcon name="i-heroicons-building-office-2" class="w-8 h-8 text-green-600"/>
+          <UIcon name="i-heroicons-academic-cap" class="w-8 h-8 text-green-600"/>
         </div>
       </div>
     </div>
