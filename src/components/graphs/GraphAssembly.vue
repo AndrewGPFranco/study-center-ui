@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen w-full flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
     <div
-      class="flex items-center justify-between p-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-10">
+        class="flex items-center justify-between p-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-10">
       <div class="flex items-center gap-3">
         <router-link :to="{ name: 'home-view' }">
           <UTooltip text="Voltar" :popper="{ placement: 'right' }">
@@ -20,7 +20,7 @@
 
       <div class="flex items-center gap-2 w-full max-w-md">
         <UInput v-model="technology" icon="i-heroicons-magnifying-glass" placeholder="Ex: java, python..."
-          class="flex-1" @keyup.enter="fetchGraphData">
+                class="flex-1" @keyup.enter="fetchGraphData">
           <template #trailing>
             <UButton v-show="technology !== ''" color="gray" variant="link" class="cursor-pointer"
                      icon="i-heroicons-x-mark" :padded="false" @click="technology = ''"/>
@@ -28,7 +28,7 @@
         </UInput>
 
         <UButton icon="i-heroicons-arrow-path" class="cursor-pointer" :disabled="technology.length < 2"
-          :loading="loading" @click="fetchGraphData">
+                 :loading="loading" @click="fetchGraphData">
           Buscar
         </UButton>
       </div>
@@ -36,7 +36,7 @@
 
     <div class="flex-1 relative bg-gray-50 dark:bg-gray-950 overflow-hidden">
       <VueFlow v-if="graph" class="h-full w-full" :nodes="getNodes" :edges="getEdges" :default-viewport="{ zoom: 0.8 }"
-        :min-zoom="0.1" :max-zoom="4" fit-view-on-init>
+               :min-zoom="0.1" :max-zoom="4" fit-view-on-init>
         <template #node-special="specialNodeProps">
           <SpecialNode v-bind="specialNodeProps" :color="colorGraph"/>
         </template>
@@ -46,7 +46,7 @@
         </template>
 
         <div class="absolute inset-0 -z-10 pointer-events-none opacity-[0.03] dark:opacity-[0.05]"
-          style="background-image: radial-gradient(#6b7280 1px, transparent 1px); background-size: 20px 20px;">
+             style="background-image: radial-gradient(#6b7280 1px, transparent 1px); background-size: 20px 20px;">
         </div>
       </VueFlow>
 
@@ -59,7 +59,7 @@
       </div>
 
       <div v-if="graph"
-        class="absolute bottom-6 right-6 flex flex-col gap-2 p-1.5 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20">
+           class="absolute bottom-6 right-6 flex flex-col gap-2 p-1.5 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20">
         <UTooltip text="Zoom In" :popper="{ placement: 'left' }">
           <UButton class="cursor-pointer" icon="i-heroicons-plus" color="gray" variant="ghost" size="sm"
                    @click="() => { zoomIn() }" square/>
@@ -85,9 +85,11 @@ import SpecialNode from "@/components/graphs/SpecialNode.vue"
 import SpecialEdge from "@/components/graphs/SpecialEdge.vue"
 import {VueFlow, useVueFlow, MarkerType} from '@vue-flow/core'
 import {createAxiosInstance} from "@/network/axios-instance.ts"
+import {useAuthStore} from "@/stores/auth.ts";
 
 const toast = useToast();
 const graph = ref<IGraph>()
+const authStore = useAuthStore()
 const loading = ref(false)
 const technology = ref<string>("")
 const axiosInstance = createAxiosInstance()
@@ -151,7 +153,7 @@ async function fetchGraphData() {
   try {
     const response = await axiosInstance.get(`graph?technology=${technology.value}`, {
       headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_TOKEN}`,
+        Authorization: `Bearer ${authStore.getToken()}`,
       },
     })
 
