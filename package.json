@@ -19,10 +19,12 @@
     "@vue-flow/core": "^1.48.0",
     "axios": "^1.13.2",
     "bs-logger": "^0.2.6",
+    "jwt-decode": "^4.0.0",
     "pinia": "^3.0.4",
     "uuid": "^13.0.0",
     "vue": "^3.5.25",
-    "vue-router": "^4.6.3"
+    "vue-router": "^4.6.3",
+    "zod": "^4.2.0"
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.3",
