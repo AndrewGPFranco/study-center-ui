@@ -30,21 +30,17 @@
         </div>
       </template>
 
-      <form @submit.prevent="handleLogin" class="space-y-5">
+      <form @submit.prevent="handleLogin" class="space-y-5 flex flex-col justify-center items-center">
         <div class="space-y-4">
           <UFormGroup
               label="Email"
               name="email"
-              :error="errors.usernameOrEmail"
               required>
             <UInput
                 v-model="form.usernameOrEmail"
                 placeholder="Email ou Username"
                 icon="i-heroicons-envelope"
                 size="lg"
-                :color="errors.usernameOrEmail ? 'red' : 'primary'"
-                @blur="validateField('usernameOrEmail')"
-                @input="clearFieldError('usernameOrEmail')"
                 class="transition-all"
             />
           </UFormGroup>
@@ -52,17 +48,13 @@
           <UFormGroup
               label="Senha"
               name="password"
-              :error="errors.password"
               required>
             <UInput
                 v-model="form.password"
                 :type="showPassword ? 'text' : 'password'"
                 placeholder="Mínimo 6 caracteres"
                 icon="i-heroicons-lock-closed"
-                size="lg"
-                :color="errors.password ? 'red' : 'primary'"
-                @blur="validateField('password')"
-                @input="clearFieldError('password')"/>
+                size="lg"/>
             <template #trailing>
               <UButton
                   color="gray"
@@ -106,11 +98,6 @@ const form = reactive({
   password: ''
 })
 
-const errors = reactive({
-  usernameOrEmail: '',
-  password: ''
-})
-
 const loginSchema = z.object({
   usernameOrEmail: z
       .string()
@@ -121,50 +108,15 @@ const loginSchema = z.object({
       .max(100, 'A senha deve ter no máximo 100 caracteres')
 })
 
-function validateField(field: keyof typeof form) {
-  try {
-    const fieldSchema = loginSchema.shape[field]
-    fieldSchema.parse(form[field])
-    errors[field] = ''
-    return true
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      errors[field] = error.errors[0].message
-    }
-    return false
-  }
-}
-
-function clearFieldError(field: keyof typeof errors) {
-  errors[field] = ''
-}
-
-function validateForm(): boolean {
-  try {
-    loginSchema.parse(form)
-    errors.usernameOrEmail = ''
-    errors.password = ''
-    return true
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err: any) => {
-        const field = err.path[0] as keyof typeof errors
-        errors[field] = err.message
-      })
-    }
-    return false
-  }
-}
-
 async function handleLogin() {
-  if (!validateForm()) {
+  const resultValidation = loginSchema.safeParse(form);
+
+  if (!resultValidation.success) {
     toast.add({
-      title: 'Erro de validação',
-      description: 'Por favor, corrija os erros no formulário.',
-      icon: 'i-heroicons-exclamation-triangle',
-      color: 'red'
-    })
-    return
+      title: 'Erro',
+      description: "Erro ao validar os dados"
+    });
+    return;
   }
 
   loading.value = true
