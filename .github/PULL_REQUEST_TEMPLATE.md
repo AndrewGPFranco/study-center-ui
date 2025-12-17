@@ -1,16 +1,13 @@
-## Descrição
-Por favor, inclua um resumo da mudança e qual é a issue corrigida. Por favor, inclua também motivação e contexto relevantes. Liste quaisquer dependências que são necessárias para esta mudança.
+## Resumo
 
-Fixes # (issue)
+- Resumo aqui. 
+
+Issue: []()
 
 ## Tipo de mudança
 
-Por favor, exclua as opções que não são relevantes.
-
 - [ ] Bug fix (mudança não-quebrante que corrige um problema)
 - [ ] Nova funcionalidade (mudança não-quebrante que adiciona funcionalidade)
-- [ ] Breaking change (correção ou funcionalidade que faria com que a funcionalidade existente não funcionasse como esperado)
-- [ ] Atualização de documentação
 
 ## Checklist:
 
