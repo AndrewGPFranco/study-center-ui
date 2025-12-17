@@ -1,5 +1,6 @@
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300 relative overflow-hidden">
+  <div
+    class="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300 relative overflow-hidden flex flex-col">
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
       <div
         class="absolute -top-[20%] -right-[10%] w-[60%] h-[60%] bg-indigo-50/50 dark:bg-indigo-900/10 rounded-full filter blur-3xl opacity-40 animate-blob">
@@ -9,143 +10,107 @@
       </div>
     </div>
 
-    <div class="relative z-10 flex flex-col min-h-screen">
-      <header
-        class="py-6 border-b border-gray-100 dark:border-gray-800 bg-white/60 dark:bg-gray-950/60 backdrop-blur-md">
-        <UContainer class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <span class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
-              Central dos Estudos
+    <AppHeader />
+
+    <main class="grow flex flex-col justify-center px-4 py-16 relative z-10">
+      <UContainer>
+        <div class="text-center mb-20 space-y-6 relative">
+          <div
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-sm font-medium mb-4 animate-fade-in-up">
+            <span class="relative flex h-2 w-2">
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
             </span>
+            Seu hub de estudos
           </div>
 
-          <div class="flex items-center gap-3">
-            <ColorModeButton class="cursor-pointer" />
-            <div v-if="!hasToken">
-              <UButton :to="{ name: 'login-view' }" label="Login" color="gray" variant="ghost"
-                class="hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" />
-            </div>
-            <div v-else>
-              <UButton @click="logout" label="Sair" color="gray" variant="ghost"
-                icon="i-heroicons-arrow-right-on-rectangle"
-                class="hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" />
-            </div>
-          </div>
-        </UContainer>
-      </header>
-
-      <main class="grow flex flex-col justify-center px-4 py-16">
-        <UContainer>
-          <div class="text-center mb-20 space-y-6 relative">
-            <div
-              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-sm font-medium mb-4 animate-fade-in-up">
-              <span class="relative flex h-2 w-2">
-                <span
-                  class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-              </span>
-              Seu hub de estudos
-            </div>
-
-            <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Domine seu <span
-                class="bg-linear-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent relative">
-                Aprendizado
-                <svg class="absolute w-full h-3 -bottom-1 left-0 text-indigo-200 dark:text-indigo-800 -z-10"
-                  viewBox="0 0 100 10" preserveAspectRatio="none">
-                  <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="8" fill="none" />
-                </svg>
-              </span>
-            </h1>
-            <p
-              class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
-              Explore roadmaps detalhados e organize sua rotina com um calendário inteligente.
-            </p>
-          </div>
-
-          <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto cursor-pointer">
-            <UCard
-              class="group relative overflow-hidden ring-1 ring-gray-200 dark:ring-gray-800 hover:ring-2 hover:ring-indigo-500 dark:hover:ring-indigo-400 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-indigo-100 dark:hover:shadow-indigo-900/20 bg-white dark:bg-gray-900 h-full"
-              @click="goTo('graph-view')">
-              <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
-                <UIcon name="i-heroicons-map" class="w-32 h-32 text-indigo-600" />
-              </div>
-
-              <div class="p-4 space-y-6 relative z-10">
-                <div
-                  class="w-14 h-14 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                  <UIcon name="i-heroicons-map" class="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
-                </div>
-
-                <div>
-                  <h3
-                    class="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                    Roadmaps</h3>
-                  <p class="text-gray-500 dark:text-gray-400 leading-relaxed">Trilhas de conhecimento estruturadas para
-                    guiar seu desenvolvimento do zero ao avançado.</p>
-                </div>
-
-                <div
-                  class="pt-4 flex items-center text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-2 transition-transform">
-                  Explorar Trilhas
-                  <UIcon name="i-heroicons-arrow-right" class="w-5 h-5 ml-2" />
-                </div>
-              </div>
-            </UCard>
-
-            <UCard
-              class="group relative overflow-hidden ring-1 ring-gray-200 dark:ring-gray-800 hover:ring-2 hover:ring-blue-500 dark:hover:ring-blue-400 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-blue-100 dark:hover:shadow-blue-900/20 bg-white dark:bg-gray-900 h-full"
-              @click="goTo('calendar-view')">
-              <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
-                <UIcon name="i-heroicons-calendar" class="w-32 h-32 text-blue-600" />
-              </div>
-
-              <div class="p-4 space-y-6 relative z-10 cursor-pointer">
-                <div
-                  class="w-14 h-14 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                  <UIcon name="i-heroicons-calendar" class="w-7 h-7 text-blue-600 dark:text-blue-400" />
-                </div>
-
-                <div>
-                  <h3
-                    class="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    Calendário</h3>
-                  <p class="text-gray-500 dark:text-gray-400 leading-relaxed">Gerenciamento visual de tempo. Agende
-                    revisões, provas e acompanhe sua consistência.</p>
-                </div>
-
-                <div
-                  class="pt-4 flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:translate-x-2 transition-transform">
-                  Ver Agenda
-                  <UIcon name="i-heroicons-arrow-right" class="w-5 h-5 ml-2" />
-                </div>
-              </div>
-            </UCard>
-          </div>
-        </UContainer>
-      </main>
-
-      <footer class="py-8 border-t border-gray-100 dark:border-gray-800 bg-white/50 dark:bg-gray-950/50">
-        <div class="text-center text-sm text-gray-400 dark:text-gray-600">
-          &copy; {{ new Date().getFullYear() }} Central dos Estudos.
+          <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Domine seu <span class="bg-linear-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent relative">
+              Aprendizado
+              <svg class="absolute w-full h-3 -bottom-1 left-0 text-indigo-200 dark:text-indigo-800 -z-10"
+                viewBox="0 0 100 10" preserveAspectRatio="none">
+                <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="8" fill="none" />
+              </svg>
+            </span>
+          </h1>
+          <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
+            Explore roadmaps detalhados e organize sua rotina com um calendário inteligente.
+          </p>
         </div>
-      </footer>
-    </div>
+
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto cursor-pointer">
+          <UCard
+            class="group relative overflow-hidden ring-1 ring-gray-200 dark:ring-gray-800 hover:ring-2 hover:ring-indigo-500 dark:hover:ring-indigo-400 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-indigo-100 dark:hover:shadow-indigo-900/20 bg-white dark:bg-gray-900 h-full"
+            @click="goTo('graph-view')">
+            <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+              <UIcon name="i-heroicons-map" class="w-32 h-32 text-indigo-600" />
+            </div>
+
+            <div class="p-4 space-y-6 relative z-10">
+              <div
+                class="w-14 h-14 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                <UIcon name="i-heroicons-map" class="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
+              </div>
+
+              <div>
+                <h3
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                  Roadmaps</h3>
+                <p class="text-gray-500 dark:text-gray-400 leading-relaxed">Trilhas de conhecimento estruturadas para
+                  guiar seu desenvolvimento do zero ao avançado.</p>
+              </div>
+
+              <div
+                class="pt-4 flex items-center text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-2 transition-transform">
+                Explorar Trilhas
+                <UIcon name="i-heroicons-arrow-right" class="w-5 h-5 ml-2" />
+              </div>
+            </div>
+          </UCard>
+
+          <UCard
+            class="group relative overflow-hidden ring-1 ring-gray-200 dark:ring-gray-800 hover:ring-2 hover:ring-blue-500 dark:hover:ring-blue-400 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-blue-100 dark:hover:shadow-blue-900/20 bg-white dark:bg-gray-900 h-full"
+            @click="goTo('calendar-view')">
+            <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+              <UIcon name="i-heroicons-calendar" class="w-32 h-32 text-blue-600" />
+            </div>
+
+            <div class="p-4 space-y-6 relative z-10 cursor-pointer">
+              <div
+                class="w-14 h-14 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                <UIcon name="i-heroicons-calendar" class="w-7 h-7 text-blue-600 dark:text-blue-400" />
+              </div>
+
+              <div>
+                <h3
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  Calendário</h3>
+                <p class="text-gray-500 dark:text-gray-400 leading-relaxed">Gerenciamento visual de tempo. Agende
+                  revisões, provas e acompanhe sua consistência.</p>
+              </div>
+
+              <div
+                class="pt-4 flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:translate-x-2 transition-transform">
+                Ver Agenda
+                <UIcon name="i-heroicons-arrow-right" class="w-5 h-5 ml-2" />
+              </div>
+            </div>
+          </UCard>
+        </div>
+      </UContainer>
+    </main>
+
+    <AppFooter />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useAuthStore } from "@/stores/auth.ts";
-import { computed } from "vue";
 import { useRouter } from "vue-router";
+import AppHeader from "@/components/AppHeader.vue";
+import AppFooter from "@/components/AppFooter.vue";
 
-const authStore = useAuthStore();
 const router = useRouter();
-const hasToken = computed(() => !!authStore.token);
-
-function logout() {
-  authStore.logout();
-}
 
 function goTo(routeName: string) {
   router.push({ name: routeName });
