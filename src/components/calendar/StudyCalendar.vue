@@ -27,16 +27,16 @@
 
         <!-- Navigation Placeholders -->
         <div class="flex items-center gap-2">
-          <button
-              class="p-2 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+          <button @click="previousMonth"
+                  class="p-2 rounded-xl cursor-pointer bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
             <UIcon name="i-heroicons-chevron-left-20-solid" class="w-5 h-5"/>
           </button>
-          <button
+          <p
               class="px-4 py-2 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors font-medium text-sm">
-            Próximo mes
-          </button>
-          <button
-              class="p-2 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+            Próximo mês
+          </p>
+          <button @click="nextMonth"
+                  class="p-2 rounded-xl cursor-pointer bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
             <UIcon name="i-heroicons-chevron-right-20-solid" class="w-5 h-5"/>
           </button>
         </div>
@@ -81,25 +81,42 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue';
+import {computed, ref} from 'vue';
 import DateStudy from './DateStudy.vue';
 
-const currentDate = new Date();
+let currentDate = ref(new Date());
 const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
 const longMonthString = computed(() => {
-  const monthAsString = currentDate.toLocaleString('pt-BR', {month: 'long'});
+  const monthAsString = currentDate.value.toLocaleString('pt-BR', {month: 'long'});
   return monthAsString.charAt(0).toUpperCase() + monthAsString.substring(1);
 });
 
 const amountDays = computed(() => {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const year = currentDate.value.getFullYear();
+  const month = currentDate.value.getMonth();
   return new Date(year, month + 1, 0).getDate();
 });
 
 const startDayOffset = computed(() => {
-  const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  const firstDay = new Date(
+      currentDate.value.getFullYear(),
+      currentDate.value.getMonth(),
+      1
+  );
   return firstDay.getDay();
 });
+
+const previousMonth = () => {
+  const d = new Date(currentDate.value);
+  d.setMonth(d.getMonth() - 1);
+  currentDate.value = d;
+};
+
+const nextMonth = () => {
+  const d = new Date(currentDate.value);
+  d.setMonth(d.getMonth() + 1);
+  currentDate.value = d;
+};
+
 </script>
