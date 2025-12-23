@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-indigo-950 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    class="flex items-center justify-center min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-indigo-950 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
 
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
       <div
@@ -17,13 +17,13 @@
         <div class="text-center space-y-2">
           <div class="flex justify-center mb-4">
             <div
-              class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform">
+              class="w-16 h-16 bg-linear-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform">
               <UIcon name="i-heroicons-shield-check" class="w-8 h-8 text-white" />
             </div>
           </div>
 
           <h1
-            class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+            class="text-3xl font-bold bg-linear-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
             Bem-vindo de volta!
           </h1>
           <p class="text-sm text-gray-600 dark:text-gray-400">
@@ -50,8 +50,8 @@
         </div>
 
         <UButton type="submit" block size="lg" :loading="loading"
-          class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg">
-          <span class="font-semibold">Entrar na conta</span>
+          class="bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg">
+          <span class="font-semibold cursor-pointer">Entrar na conta</span>
         </UButton>
       </form>
     </UCard>

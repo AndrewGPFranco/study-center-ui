@@ -1,5 +1,5 @@
 <template>
-  <GraphView/>
+  <GraphView />
 </template>
 
 <script setup lang="ts">
