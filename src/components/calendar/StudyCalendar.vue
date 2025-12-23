@@ -1,27 +1,105 @@
 <template>
-  <main class="flex flex-col items-center justify-center w-full min-h-screen">
-    <h1 class="text-3xl mb-8">{{ longMonthString }}</h1>
-    <section class="grid grid-cols-9 gap-4 w-full max-w-8xl p-5">
-      <div v-for="amount in amountDays" :key="amount">
-        <DateStudy/>
+  <main class="min-h-screen w-full text-gray-900 dark:text-slate-200 p-4 md:p-8 font-sans selection:bg-primary-500/30">
+    <div class="max-w-6xl mx-auto space-y-8">
+      <!-- Back Button -->
+      <div class="flex justify-start">
+        <UButton
+            to="/"
+            icon="i-heroicons-arrow-left-20-solid"
+            variant="ghost"
+            color="gray"
+            class="hover:bg-gray-100 dark:hover:bg-white/5 rounded-xl px-4 py-2"
+        >
+          Voltar
+        </UButton>
       </div>
-    </section>
+
+      <!-- Calendar Header -->
+      <header
+          class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 dark:border-white/5 pb-8">
+        <div>
+          <h2 class="text-sm font-medium tracking-widest text-primary-500 uppercase mb-2">Plano de Estudos</h2>
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white tracking-tight">
+            {{ longMonthString }} <span
+              class="text-gray-400 dark:text-slate-500 font-light">{{ currentDate.getFullYear() }}</span>
+          </h1>
+        </div>
+
+        <!-- Navigation Placeholders -->
+        <div class="flex items-center gap-2">
+          <button
+              class="p-2 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+            <UIcon name="i-heroicons-chevron-left-20-solid" class="w-5 h-5"/>
+          </button>
+          <button
+              class="px-4 py-2 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors font-medium text-sm">
+            Próximo mes
+          </button>
+          <button
+              class="p-2 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+            <UIcon name="i-heroicons-chevron-right-20-solid" class="w-5 h-5"/>
+          </button>
+        </div>
+      </header>
+
+      <!-- Calendar Body -->
+      <div class="relative group">
+        <!-- Glow Backdrop -->
+        <div
+            class="absolute -inset-1 bg-linear-to-r from-primary-500/10 to-blue-500/10 dark:from-primary-500/20 dark:to-blue-500/20 rounded-4xl blur-2xl opacity-20 group-hover:opacity-30 transition duration-1000"></div>
+        <section
+            class="relative bg-white/50 dark:bg-white/2 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-4xl p-6 md:p-8 shadow-xl dark:shadow-2xl">
+
+          <!-- Weekday Headers -->
+          <div class="grid grid-cols-7 mb-6 border-b border-gray-100 dark:border-white/5 pb-4">
+            <div v-for="day in weekDays" :key="day" class="text-center">
+              <span class="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500">
+                {{ day }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Calendar Grid -->
+          <div class="grid grid-cols-7 gap-3 md:gap-4">
+            <div v-for="empty in startDayOffset" :key="'empty-' + empty" class=" opacity-20">
+              <div class="w-full h-full border border-dashed border-gray-300 dark:border-white/10 rounded-2xl"></div>
+            </div>
+
+            <!-- Actual Days -->
+            <DateStudy
+                v-for="day in amountDays"
+                :key="day"
+                :number-day="day"
+                :month="currentDate.getMonth()"
+                :year="currentDate.getFullYear()"
+            />
+          </div>
+        </section>
+      </div>
+    </div>
   </main>
 </template>
 
 <script setup lang="ts">
 import {computed} from 'vue';
+import DateStudy from './DateStudy.vue';
 
 const currentDate = new Date();
+const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
 const longMonthString = computed(() => {
   const monthAsString = currentDate.toLocaleString('pt-BR', {month: 'long'});
   return monthAsString.charAt(0).toUpperCase() + monthAsString.substring(1);
-})
+});
 
-function daysInMonth(month: number, year: number) {
-  return new Date(year, month, 0).getDate() + 1;
-}
+const amountDays = computed(() => {
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  return new Date(year, month + 1, 0).getDate();
+});
 
-const amountDays = computed(() => daysInMonth(currentDate.getMonth(), currentDate.getFullYear()));
+const startDayOffset = computed(() => {
+  const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  return firstDay.getDay();
+});
 </script>
