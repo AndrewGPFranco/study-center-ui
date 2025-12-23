@@ -35,78 +35,19 @@
     </div>
   </div>
 
-  <!-- Modal to view studies -->
-  <UModal v-model:open="openModalView">
-    <template #content>
-      <UCard class="sm:max-w-lg w-full mx-auto" :ui="{
-        ring: '',
-        divide: 'divide-y divide-gray-100 dark:divide-white/5',
-      }">
-        <template #header>
-          <div class="flex items-center justify-between">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white">
-              {{ numberDay }} de {{ currentMonthName }}
-            </h3>
-            <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1 cursor-pointer"
-                     @click="openModalView = false"/>
-          </div>
-        </template>
+  <ModalView
+      :numberDay="numberDay"
+      :openModalView="openModalView"
+      :currentMonthName="currentMonthName"
+      @update:openModalView="openModalView = false"
+      @update:openModalAddStudy="openModalAddStudy = true"
+  />
 
-        <div class="space-y-6">
-          <div
-              class="flex flex-col items-center justify-center py-10 px-4 bg-gray-50 dark:bg-white/2 rounded-3xl border border-dashed border-gray-200 dark:border-white/10">
-            <UIcon name="i-heroicons-calendar-days" class="w-12 h-12 text-gray-300 dark:text-gray-600 mb-4"/>
-
-            <!-- TODO add studies saved -->
-
-            <p class="text-gray-500 dark:text-gray-400 text-center font-medium">
-              Ainda não há tarefas registradas para este dia.
-            </p>
-          </div>
-        </div>
-
-        <template #footer>
-          <div class="flex justify-end gap-3">
-            <UButton @click="openModalAddStudyAndCloseModalView" class="cursor-pointer" label="Adicionar Tarefa"
-                     color="primary" icon="i-heroicons-plus-20-solid"/>
-          </div>
-        </template>
-      </UCard>
-    </template>
-  </UModal>
-
-  <!-- Modal to add a new study -->
-  <UModal v-model:open="openModalAddStudy">
-    <template #content>
-      <UCard class="sm:max-w-lg w-full mx-auto" :ui="{
-        ring: '',
-        divide: 'divide-y divide-gray-100 dark:divide-white/5',
-      }">
-        <template #header>
-          <div class="flex items-center justify-between">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white">
-              Adicionar novo estudo
-            </h3>
-            <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1 cursor-pointer"
-                     @click="openModalAddStudy = false"/>
-          </div>
-        </template>
-
-        <div class="space-y-6">
-          <div>
-            <UForm></UForm>
-          </div>
-        </div>
-
-        <template #footer>
-          <div class="flex justify-end gap-3">
-            <UButton @click="addNewStudy" class="cursor-pointer" label="Adicionar Tarefa" color="primary"
-                     icon="i-heroicons-plus-20-solid"/>
-          </div>
-        </template>
-      </UCard>
-    </template>
-  </UModal>
+  <ModalNewStudy
+      :openModalAddStudy="openModalAddStudy"
+      @update:openModalView="openModalAddStudy = false"
+      @update:closeModalAddStudy="openModalAddStudy = false"
+  />
 </template>
 
 <script setup lang="ts">
@@ -121,20 +62,11 @@ const props = defineProps<{
 const openModalView = ref<boolean>(false);
 const openModalAddStudy = ref<boolean>(false);
 
-const openModalAddStudyAndCloseModalView = () => {
-  openModalAddStudy.value = !openModalAddStudy.value;
-  openModalView.value = !openModalView.value
-}
-
 const currentMonthName = computed(() => {
   const checkMonth = props.month ?? new Date().getMonth();
   const date = new Date(2000, checkMonth, 1);
   return date.toLocaleString('pt-BR', {month: 'long'});
 });
-
-const addNewStudy = () => {
-  openModalAddStudy.value = false
-}
 
 const isToday = computed(() => {
   const today = new Date();
