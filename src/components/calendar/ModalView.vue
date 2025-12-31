@@ -9,7 +9,7 @@
         <template #header>
           <div class="flex items-center justify-between">
             <h3 class="text-xl font-bold text-gray-900 dark:text-white">
-              {{ numberDay }} de {{ currentMonthName }}
+              {{ numberDay }} de {{ currentMonthName }} de {{ year }}
             </h3>
             <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1 cursor-pointer"
                      @click="closeModalView"/>
@@ -29,7 +29,7 @@
           </div>
         </div>
 
-        <template #footer>
+        <template #footer v-if="isPastDate">
           <div class="flex justify-end gap-3">
             <UButton @click="openModalAddStudyAndCloseModalView" class="cursor-pointer" label="Adicionar Tarefa"
                      color="primary" icon="i-heroicons-plus-20-solid"/>
@@ -41,6 +41,10 @@
 </template>
 
 <script setup lang="ts">
+import {ref, watch} from "vue";
+import {useAuthStore} from "@/stores/auth.ts";
+import {createAxiosInstance} from "@/network/axios-instance.ts";
+
 const props = defineProps({
   numberDay: {
     type: Number,
@@ -48,6 +52,10 @@ const props = defineProps({
   },
   currentMonthName: {
     type: String,
+    required: true,
+  },
+  year: {
+    type: Number,
     required: true,
   },
   openModalView: {
@@ -64,4 +72,34 @@ const openModalAddStudyAndCloseModalView = () => {
   emit("update:openModalView", true);
   emit("update:openModalAddStudy", true);
 }
+
+const authStore = useAuthStore();
+const isPastDate = ref<boolean>(false);
+
+const handleDateInThePast = async () => {
+  if (!props.openModalView) return;
+
+  let api = createAxiosInstance();
+
+  const input = {
+    dayNumber: props.numberDay,
+    month: props.currentMonthName,
+    year: props.year
+  }
+
+  const response = await api.post("/calendar/is-date-in-the-past", input, {
+    headers: {
+      Authorization: `Bearer ${authStore.token}`,
+    },
+  });
+
+  isPastDate.value = !response.data;
+};
+
+watch(() => props.openModalView, (isOpen) => {
+  if (isOpen)
+    handleDateInThePast();
+  else
+    isPastDate.value = false;
+});
 </script>

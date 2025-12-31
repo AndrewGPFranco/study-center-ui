@@ -36,6 +36,7 @@
   </div>
 
   <ModalView
+      :year="year"
       :numberDay="numberDay"
       :openModalView="openModalView"
       :currentMonthName="currentMonthName"
@@ -56,7 +57,7 @@ import {computed, ref} from 'vue';
 const props = defineProps<{
   numberDay: number;
   month?: number;
-  year?: number;
+  year: number;
 }>();
 
 const openModalView = ref<boolean>(false);
