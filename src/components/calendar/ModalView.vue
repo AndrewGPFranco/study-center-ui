@@ -42,8 +42,7 @@
 
 <script setup lang="ts">
 import {ref, watch} from "vue";
-import {useAuthStore} from "@/stores/auth.ts";
-import {createAxiosInstance} from "@/network/axios-instance.ts";
+import {useCalendarStore} from "@/stores/calendar.ts";
 
 const props = defineProps({
   numberDay: {
@@ -73,13 +72,11 @@ const openModalAddStudyAndCloseModalView = () => {
   emit("update:openModalAddStudy", true);
 }
 
-const authStore = useAuthStore();
+const calendarStore = useCalendarStore();
 const isPastDate = ref<boolean>(false);
 
 const handleDateInThePast = async () => {
   if (!props.openModalView) return;
-
-  let api = createAxiosInstance();
 
   const input = {
     dayNumber: props.numberDay,
@@ -87,13 +84,7 @@ const handleDateInThePast = async () => {
     year: props.year
   }
 
-  const response = await api.post("/calendar/is-date-in-the-past", input, {
-    headers: {
-      Authorization: `Bearer ${authStore.token}`,
-    },
-  });
-
-  isPastDate.value = !response.data;
+  isPastDate.value = await calendarStore.handleDateInThePast(input);
 };
 
 watch(() => props.openModalView, (isOpen) => {

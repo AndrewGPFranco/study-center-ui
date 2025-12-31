@@ -1,5 +1,5 @@
-import {defineStore} from "pinia";
 import {AxiosError} from "axios";
+import {defineStore} from "pinia";
 import type {IUserLogin} from "@/types/utils.ts";
 import ResponseAPI from "@/utils/ResponseAPI.ts";
 import {createAxiosInstance} from "@/network/axios-instance.ts";
