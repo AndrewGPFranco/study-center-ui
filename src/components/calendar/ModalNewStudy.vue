@@ -18,37 +18,39 @@
 
         <div class="space-y-6">
           <div>
-            <UForm class="flex flex-col justify-center gap-3">
-              <UFormField label="Título">
-                <UInput placeholder="Digite um título" v-model="title"/>
+            <UForm :schema="schema" :state="state" class="flex flex-col justify-center items-center gap-3 w-full"
+                   @submit="addNewStudy">
+              <UFormField label="Título" name="title" class="w-full">
+                <UInput placeholder="Digite um título" v-model="state.title" class="w-full"/>
               </UFormField>
-              <UFormField label="Descrição">
-                <UInput placeholder="Digite uma descrição" v-model="description"/>
+              <UFormField label="Descrição" name="description" class="w-full">
+                <UTextarea placeholder="Digite uma descrição" v-model="state.description" class="w-full"/>
               </UFormField>
+
+              <div class="flex justify-end gap-3 mt-4 w-full">
+                <UButton variant="soft" color="gray" @click="closeModal" label="Cancelar"/>
+                <UButton type="submit" :loading="loading" class="cursor-pointer" label="Adicionar Tarefa"
+                         color="primary"
+                         icon="i-heroicons-plus-20-solid"/>
+              </div>
             </UForm>
           </div>
         </div>
-
-        <template #footer>
-          <div class="flex justify-end gap-3">
-            <UButton @click="addNewStudy" class="cursor-pointer" label="Adicionar Tarefa" color="primary"
-                     icon="i-heroicons-plus-20-solid"/>
-          </div>
-        </template>
       </UCard>
     </template>
   </UModal>
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {z} from "zod";
+import {reactive, ref} from "vue";
 import DateUtils from "@/utils/DateUtils.ts";
 import {useCalendarStore} from "@/stores/calendar.ts";
 
+const toast = useToast();
 const dateUtils = new DateUtils();
 const calendarStore = useCalendarStore();
 
-const toast = useToast();
 const emit = defineEmits(["update:openModalView", "update:closeModalAddStudy"]);
 
 const props = defineProps({
@@ -70,32 +72,65 @@ const props = defineProps({
   }
 })
 
-const title = ref<string>("")
-const description = ref<string>("")
+const loading = ref(false);
+
+const schema = z.object({
+  title: z.string().min(3, "O título deve ter pelo menos 3 caracteres"),
+  description: z.string()
+});
+
+const state = reactive({
+  title: "",
+  description: ""
+});
 
 const addNewStudy = async () => {
-  const dateStudy = dateUtils.getDate(props.year, props.currentMonthName, props.numberDay);
+  const resultValidation = schema.safeParse(state);
 
-  const response = await calendarStore.registerNewStudy({
-    title: title.value,
-    description: description.value,
-    studyDate: dateStudy
-  });
-
-  if (response.getError()) {
+  if (!resultValidation.success) {
     toast.add({
       title: 'Erro',
-      description: "Erro ao registrar estudo, verifique os dados e tente novamente!"
+      description: "Erro ao validar os dados, verifique os campos!",
+      color: 'red',
+      icon: 'i-heroicons-exclamation-circle'
     });
     return;
   }
 
-  toast.add({
-    title: 'Feedback',
-    description: response.getResponse() as string
-  });
+  loading.value = true;
+  const dateStudy = dateUtils.getDate(props.year, props.currentMonthName, props.numberDay);
 
-  emit("update:closeModalAddStudy", true);
+  try {
+    const response = await calendarStore.registerNewStudy({
+      title: state.title,
+      description: state.description,
+      studyDate: dateStudy
+    });
+
+    if (response.getError()) {
+      toast.add({
+        title: 'Erro',
+        description: "Erro ao registrar estudo, verifique os dados e tente novamente!",
+        color: 'red',
+        icon: 'i-heroicons-exclamation-circle'
+      });
+      return;
+    }
+
+    toast.add({
+      title: 'Sucesso',
+      description: response.getResponse() as string,
+      color: 'green',
+      icon: 'i-heroicons-check-circle'
+    });
+
+    state.title = "";
+    state.description = "";
+
+    emit("update:closeModalAddStudy", true);
+  } finally {
+    loading.value = false;
+  }
 }
 
 const closeModal = () => {
