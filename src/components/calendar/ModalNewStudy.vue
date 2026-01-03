@@ -28,7 +28,7 @@
               </UFormField>
 
               <div class="flex justify-end gap-3 mt-4 w-full">
-                <UButton variant="soft" color="gray" @click="closeModal" label="Cancelar"/>
+                <UButton variant="soft" color="gray" @click="closeModal" label="Cancelar" class="cursor-pointer"/>
                 <UButton type="submit" :loading="loading" class="cursor-pointer" label="Adicionar Tarefa"
                          color="primary"
                          icon="i-heroicons-plus-20-solid"/>

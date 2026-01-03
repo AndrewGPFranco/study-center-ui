@@ -57,6 +57,19 @@ export const useCalendarStore = defineStore("calendar-store", {
             } catch (error: unknown) {
                 return this.handleError(error);
             }
+        },
+        async deleteTask(idTask: string): Promise<ResponseAPI<string>> {
+            try {
+                const response = await this.apiInstance.delete(`/calendar?idStudyTask=${idTask}`, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`,
+                    },
+                });
+
+                return new ResponseAPI(false, response.data);
+            } catch (error: unknown) {
+                return this.handleError(error);
+            }
         }
     },
 });

@@ -44,7 +44,19 @@
               <div
                   class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center text-xs text-gray-400">
                 <span>Criado em {{ formatDate(study.createdAt) }}</span>
-                <!-- Future actions like 'Delete' or 'Complete' could go here -->
+
+                <div class="flex gap-2">
+                  <UTooltip text="Concluir" v-if="!study.isFinalized && !study.isExpired">
+                    <UButton class="cursor-pointer" color="green" variant="ghost" icon="i-heroicons-check-circle"
+                             size="xs"
+                             @click.stop="handleFinish(study)"/>
+                  </UTooltip>
+
+                  <UDropdownMenu :items="getItems(study)" :popper="{ placement: 'bottom-end', strategy: 'fixed' }">
+                    <UButton class="cursor-pointer" color="gray" variant="ghost"
+                             icon="i-heroicons-ellipsis-vertical-20-solid" size="xs"/>
+                  </UDropdownMenu>
+                </div>
               </div>
             </div>
           </div>
@@ -97,6 +109,7 @@ const props = defineProps({
   }
 })
 
+const toast = useToast();
 const studies = ref<IStudyTask[]>([]);
 
 const emit = defineEmits(["update:openModalView", "update:openModalAddStudy"]);
@@ -106,6 +119,24 @@ const closeModalView = () => emit("update:openModalView", true);
 const openModalAddStudyAndCloseModalView = () => {
   emit("update:openModalView", true);
   emit("update:openModalAddStudy", true);
+}
+
+const getItems = (study: IStudyTask) => [
+  [{
+    label: 'Editar',
+    icon: 'i-heroicons-pencil-square-20-solid',
+    onClick: () => console.log(study.id),
+  }],
+  [{
+    label: 'Excluir',
+    icon: 'i-heroicons-trash-20-solid',
+    class: 'text-red-500 dark:text-red-400',
+    onClick: () => deleteTask(study.id)
+  }]
+]
+
+const handleFinish = (study: IStudyTask) => {
+  alert("marcar como concluído!")
 }
 
 const dateUtils = new DateUtils();
@@ -143,6 +174,31 @@ const getStudies = async () => {
 
   if (!responseAPI.getError())
     studies.value = responseAPI.getResponse() as unknown as IStudyTask[];
+}
+
+const deleteTask = async (idTask: string) => {
+  const response = await calendarStore.deleteTask(idTask);
+
+  if (response.getError()) {
+    toast.add({
+      title: 'Erro',
+      description: "Erro ao deletar estudo, tente novamente!",
+      color: 'red',
+      icon: 'i-heroicons-exclamation-circle'
+    });
+    return;
+  }
+
+  toast.add({
+    title: 'Sucesso',
+    description: response.getResponse() as string,
+    color: 'green',
+    icon: 'i-heroicons-check-circle'
+  });
+
+  studies.value = [];
+
+  await getStudies()
 }
 </script>
 
