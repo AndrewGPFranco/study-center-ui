@@ -52,13 +52,16 @@
           <div v-else
                class="flex flex-col items-center justify-center py-12 px-4 bg-gray-50 dark:bg-white/5 rounded-3xl border border-dashed border-gray-200 dark:border-white/10">
             <UIcon name="i-heroicons-calendar-days" class="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4"/>
-            <p class="text-gray-500 dark:text-gray-400 text-center font-medium">
+            <p v-if="isPastDate">
+              Não houve registros de estudos para este dia.
+            </p>
+            <p v-else class="text-gray-500 dark:text-gray-400 text-center font-medium">
               Ainda não há tarefas registradas para este dia.
             </p>
           </div>
         </div>
 
-        <template #footer v-if="isPastDate">
+        <template #footer v-if="!isPastDate">
           <div class="flex justify-end gap-3">
             <UButton @click="openModalAddStudyAndCloseModalView" class="cursor-pointer" label="Adicionar Tarefa"
                      color="primary" icon="i-heroicons-plus-20-solid"/>

@@ -18,7 +18,7 @@ export const useCalendarStore = defineStore("calendar-store", {
                 },
             });
 
-            return !response.data;
+            return response.data;
         },
         async registerNewStudy(input: IRegisterStudy): Promise<ResponseAPI<string>> {
             try {
