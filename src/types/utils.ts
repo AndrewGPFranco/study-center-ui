@@ -8,3 +8,13 @@ export interface IRegisterStudy {
     studyDate: Date;
     description: string;
 }
+
+export interface IStudyTask {
+    id: string;
+    title: string;
+    studyDate: string;
+    createdAt: string;
+    isExpired: boolean;
+    isFinalized: boolean;
+    description: string | null;
+}

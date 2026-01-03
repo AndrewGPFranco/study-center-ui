@@ -44,5 +44,19 @@ export const useCalendarStore = defineStore("calendar-store", {
 
             return new ResponseAPI(true, "Erro inesperado");
         },
+        async getStudiesByDate(date: Date): Promise<ResponseAPI<IRegisterStudy[]>> {
+            try {
+                const dateFormatted = date.toISOString().split("T")[0];
+                const response = await this.apiInstance.get(`/calendar/get-all-by-date?date=${dateFormatted}`, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`,
+                    },
+                });
+
+                return new ResponseAPI(false, response.data);
+            } catch (error: unknown) {
+                return this.handleError(error);
+            }
+        }
     },
 });
