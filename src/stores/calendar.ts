@@ -1,5 +1,8 @@
+import {AxiosError} from "axios";
 import {defineStore} from "pinia";
 import {useAuthStore} from "@/stores/auth.ts";
+import ResponseAPI from "@/utils/ResponseAPI.ts";
+import type {IRegisterStudy} from "@/types/utils.ts";
 import {createAxiosInstance} from "@/network/axios-instance.ts";
 
 export const useCalendarStore = defineStore("calendar-store", {
@@ -16,6 +19,30 @@ export const useCalendarStore = defineStore("calendar-store", {
             });
 
             return !response.data;
-        }
+        },
+        async registerNewStudy(input: IRegisterStudy): Promise<ResponseAPI<string>> {
+            try {
+                const response = await this.apiInstance.post("/calendar/register-study", input, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`,
+                    },
+                });
+
+                return new ResponseAPI(false, response.data);
+            } catch (error: unknown) {
+                return this.handleError(error);
+            }
+        },
+        handleError(error: unknown) {
+            if (error instanceof AxiosError) {
+                if (error.code === 'ERR_NETWORK')
+                    return new ResponseAPI(true,
+                        "O serviço está fora do ar, por favor entrar em contato com o suporte!");
+
+                return new ResponseAPI(true, error.response?.data?.response);
+            }
+
+            return new ResponseAPI(true, "Erro inesperado");
+        },
     },
 });

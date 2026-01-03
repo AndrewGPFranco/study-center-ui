@@ -45,6 +45,9 @@
   />
 
   <ModalNewStudy
+      :year="year"
+      :numberDay="numberDay"
+      :currentMonthName="currentMonthName"
       :openModalAddStudy="openModalAddStudy"
       @update:openModalView="openModalAddStudy = false"
       @update:closeModalAddStudy="openModalAddStudy = false"
@@ -56,7 +59,7 @@ import {computed, ref} from 'vue';
 
 const props = defineProps<{
   numberDay: number;
-  month?: number;
+  month: number;
   year: number;
 }>();
 

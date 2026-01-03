@@ -18,7 +18,14 @@
 
         <div class="space-y-6">
           <div>
-            <UForm></UForm>
+            <UForm class="flex flex-col justify-center gap-3">
+              <UFormField label="Título">
+                <UInput placeholder="Digite um título" v-model="title"/>
+              </UFormField>
+              <UFormField label="Descrição">
+                <UInput placeholder="Digite uma descrição" v-model="description"/>
+              </UFormField>
+            </UForm>
           </div>
         </div>
 
@@ -34,16 +41,60 @@
 </template>
 
 <script setup lang="ts">
+import {ref} from "vue";
+import DateUtils from "@/utils/DateUtils.ts";
+import {useCalendarStore} from "@/stores/calendar.ts";
+
+const dateUtils = new DateUtils();
+const calendarStore = useCalendarStore();
+
+const toast = useToast();
 const emit = defineEmits(["update:openModalView", "update:closeModalAddStudy"]);
 
 const props = defineProps({
   openModalAddStudy: {
     type: Boolean,
     required: true,
+  },
+  numberDay: {
+    type: Number,
+    required: true,
+  },
+  currentMonthName: {
+    type: String,
+    required: true,
+  },
+  year: {
+    type: Number,
+    required: true,
   }
 })
 
-const addNewStudy = () => {
+const title = ref<string>("")
+const description = ref<string>("")
+
+const addNewStudy = async () => {
+  const dateStudy = dateUtils.getDate(props.year, props.currentMonthName, props.numberDay);
+
+  const response = await calendarStore.registerNewStudy({
+    title: title.value,
+    description: description.value,
+    studyDate: dateStudy
+  });
+
+  if (response.getError()) {
+    toast.add({
+      title: 'Erro',
+      description: "Erro ao registrar estudo, verifique os dados e tente novamente!"
+    });
+    return;
+  }
+
+  toast.add({
+    title: 'Feedback',
+    description: response.getResponse() as string
+  });
+
   emit("update:closeModalAddStudy", true);
 }
 
