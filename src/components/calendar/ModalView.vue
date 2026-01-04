@@ -48,11 +48,11 @@
                 <div class="flex gap-2">
                   <UTooltip text="Concluir" v-if="!study.isFinalized && !study.isExpired">
                     <UButton class="cursor-pointer" color="green" variant="ghost" icon="i-heroicons-check-circle"
-                             size="xs"
-                             @click.stop="handleFinish(study)"/>
+                             size="xs" @click.stop="handleFinish(study)"/>
                   </UTooltip>
 
-                  <UDropdownMenu :items="getItems(study)" :popper="{ placement: 'bottom-end', strategy: 'fixed' }">
+                  <UDropdownMenu v-if="!isPastDate" :items="getItems(study)"
+                                 :popper="{ placement: 'bottom-end', strategy: 'fixed' }">
                     <UButton class="cursor-pointer" color="gray" variant="ghost"
                              icon="i-heroicons-ellipsis-vertical-20-solid" size="xs"/>
                   </UDropdownMenu>
@@ -135,8 +135,29 @@ const getItems = (study: IStudyTask) => [
   }]
 ]
 
-const handleFinish = (study: IStudyTask) => {
-  alert("marcar como concluído!")
+const handleFinish = async (study: IStudyTask) => {
+  const response = await calendarStore.markAsCompleted(study.id);
+
+  if (response.getError()) {
+    toast.add({
+      title: 'Erro',
+      description: "Erro ao marcar estudo como concluído, tente novamente!",
+      color: 'red',
+      icon: 'i-heroicons-exclamation-circle'
+    });
+    return;
+  }
+
+  toast.add({
+    title: 'Sucesso',
+    description: response.getResponse() as string,
+    color: 'green',
+    icon: 'i-heroicons-check-circle'
+  });
+
+  studies.value = [];
+
+  await getStudies()
 }
 
 const dateUtils = new DateUtils();

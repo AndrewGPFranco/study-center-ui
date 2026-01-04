@@ -70,6 +70,19 @@ export const useCalendarStore = defineStore("calendar-store", {
             } catch (error: unknown) {
                 return this.handleError(error);
             }
-        }
+        },
+        async markAsCompleted(idTask: string): Promise<ResponseAPI<string>> {
+            try {
+                const response = await this.apiInstance.post(`/calendar/mark-completed?idStudyTask=${idTask}`, null, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`,
+                    },
+                });
+
+                return new ResponseAPI(false, response.data);
+            } catch (error: unknown) {
+                return this.handleError(error);
+            }
+        },
     },
 });
