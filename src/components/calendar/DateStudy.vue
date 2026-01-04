@@ -20,6 +20,13 @@
         <!-- Today Indicator Dot -->
         <div v-if="isToday" class="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></div>
       </div>
+
+      <!-- Task Activity Placeholders (Professional Touch) -->
+      <div class="w-full flex gap-1 mt-auto"> <!-- TODO: tornar isso uma funcionalidade -->
+        <div v-for="i in 3" :key="i" class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-slate-700/50 overflow-hidden">
+          <div v-if="i === 1" class="h-full bg-primary-500/50 w-2/3"></div>
+        </div>
+      </div>
     </section>
 
     <!-- Subtle glow effect on hover -->
