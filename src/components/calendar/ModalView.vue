@@ -122,11 +122,11 @@ const openModalAddStudyAndCloseModalView = () => {
 }
 
 const getItems = (study: IStudyTask) => [
-  [{
-    label: 'Editar',
-    icon: 'i-heroicons-pencil-square-20-solid',
-    onClick: () => console.log(study.id),
-  }],
+  // [{
+  //   label: 'Editar',
+  //   icon: 'i-heroicons-pencil-square-20-solid',
+  //   onClick: () => console.log(study.id),
+  // }],TODO: implementar funcionalidade de editar um estudo
   [{
     label: 'Excluir',
     icon: 'i-heroicons-trash-20-solid',
