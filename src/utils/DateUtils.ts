@@ -1,0 +1,40 @@
+class DateUtils {
+
+    getIndexMonth(month: string): number {
+        switch (month) {
+            case "janeiro":
+                return 1;
+            case "fevereiro":
+                return 2;
+            case "março":
+                return 3;
+            case "abril":
+                return 4;
+            case "maio":
+                return 5;
+            case "junho":
+                return 6;
+            case "julho":
+                return 7;
+            case "agosto":
+                return 8;
+            case "setembro":
+                return 9;
+            case "outubro":
+                return 10;
+            case "novembro":
+                return 11;
+            case "dezembro":
+                return 12;
+        }
+
+        throw new Error(`Unexpected month: ${month}`);
+    }
+
+    getDate(year: number, month: string, day: number): Date {
+        return new Date(year, this.getIndexMonth(month) - 1, day);
+    }
+
+}
+
+export default DateUtils;
