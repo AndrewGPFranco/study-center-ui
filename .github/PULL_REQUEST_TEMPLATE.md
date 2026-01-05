@@ -6,6 +6,7 @@ Issue: []()
 
 ## Tipo de mudança
 
+- [ ] Refatorar funcionalidade existente
 - [ ] Bug fix (mudança não-quebrante que corrige um problema)
 - [ ] Nova funcionalidade (mudança não-quebrante que adiciona funcionalidade)
 
