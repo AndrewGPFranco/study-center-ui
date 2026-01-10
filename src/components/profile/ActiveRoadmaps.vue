@@ -6,7 +6,7 @@
           <UIcon name="i-heroicons-paper-airplane" class="w-5 h-5 text-indigo-500"/>
           Roadmaps em Andamento
         </h3>
-        <UButton variant="link" color="gray" to="/roadmaps">Ver todos</UButton>
+        <UButton variant="link" color="gray" to="/graphs">Ver todos</UButton>
       </div>
     </template>
 
