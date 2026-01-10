@@ -17,6 +17,9 @@
                    class="hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"/>
         </div>
         <div v-else>
+          <UButton :to="{ name: 'profile' }" label="Perfil" color="gray" variant="ghost"
+                   icon="i-heroicons-user-circle"
+                   class="hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"/>
           <UButton @click="logout" label="Sair" color="gray" variant="ghost"
                    icon="i-heroicons-arrow-right-on-rectangle"
                    class="hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"/>
